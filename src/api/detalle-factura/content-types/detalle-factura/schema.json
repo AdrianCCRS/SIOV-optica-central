@@ -1,0 +1,54 @@
+{
+  "kind": "collectionType",
+  "collectionName": "detalle_facturas",
+  "info": {
+    "singularName": "detalle-factura",
+    "pluralName": "detalle-facturas",
+    "displayName": "Detalle Factura",
+    "description": "Líneas de detalle de facturas"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "cantidad": {
+      "type": "integer",
+      "required": true,
+      "min": 1
+    },
+    "precio_unitario": {
+      "type": "decimal",
+      "required": true,
+      "min": 0
+    },
+    "porcentaje_iva": {
+      "type": "decimal",
+      "required": true,
+      "min": 0,
+      "max": 100
+    },
+    "valor_iva": {
+      "type": "decimal",
+      "required": true,
+      "min": 0
+    },
+    "valor_total_linea": {
+      "type": "decimal",
+      "required": true,
+      "min": 0
+    },
+    "factura": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::factura.factura",
+      "inversedBy": "detalles"
+    },
+    "producto": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::producto.producto",
+      "inversedBy": "detalles_factura"
+    }
+  }
+}

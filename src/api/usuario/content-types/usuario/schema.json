@@ -1,0 +1,62 @@
+{
+  "kind": "collectionType",
+  "collectionName": "usuarios",
+  "info": {
+    "singularName": "usuario",
+    "pluralName": "usuarios",
+    "displayName": "Usuario",
+    "description": "Usuarios del sistema"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "username": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "password_hash": {
+      "type": "password",
+      "required": true,
+      "private": true
+    },
+    "nombres": {
+      "type": "string",
+      "required": true
+    },
+    "apellidos": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "email",
+      "required": true,
+      "unique": true
+    },
+    "activo": {
+      "type": "boolean",
+      "default": true,
+      "required": true
+    },
+    "roles": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::rol.rol",
+      "inversedBy": "usuarios"
+    },
+    "facturas": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::factura.factura",
+      "mappedBy": "usuario"
+    },
+    "movimientos_inventario": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::movimiento-inventario.movimiento-inventario",
+      "mappedBy": "usuario"
+    }
+  }
+}

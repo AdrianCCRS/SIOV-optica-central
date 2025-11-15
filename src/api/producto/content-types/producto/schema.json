@@ -1,0 +1,75 @@
+{
+  "kind": "collectionType",
+  "collectionName": "productos",
+  "info": {
+    "singularName": "producto",
+    "pluralName": "productos",
+    "displayName": "Producto",
+    "description": "Productos del inventario"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "referencia": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "nombre": {
+      "type": "string",
+      "required": true
+    },
+    "descripcion": {
+      "type": "text"
+    },
+    "precio_unitario": {
+      "type": "decimal",
+      "required": true,
+      "min": 0
+    },
+    "porcentaje_iva": {
+      "type": "decimal",
+      "required": true,
+      "default": 19,
+      "min": 0,
+      "max": 100
+    },
+    "stock_actual": {
+      "type": "integer",
+      "required": true,
+      "default": 0,
+      "min": 0
+    },
+    "stock_minimo": {
+      "type": "integer",
+      "required": true,
+      "default": 0,
+      "min": 0
+    },
+    "activo": {
+      "type": "boolean",
+      "default": true,
+      "required": true
+    },
+    "categoria": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::categoria-producto.categoria-producto",
+      "inversedBy": "productos"
+    },
+    "detalles_factura": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::detalle-factura.detalle-factura",
+      "mappedBy": "producto"
+    },
+    "movimientos_inventario": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::movimiento-inventario.movimiento-inventario",
+      "mappedBy": "producto"
+    }
+  }
+}

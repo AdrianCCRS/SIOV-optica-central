@@ -1,0 +1,50 @@
+{
+  "kind": "collectionType",
+  "collectionName": "clientes",
+  "info": {
+    "singularName": "cliente",
+    "pluralName": "clientes",
+    "displayName": "Cliente",
+    "description": "Clientes del sistema de óptica"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "tipo_identificacion": {
+      "type": "enumeration",
+      "enum": ["CC", "CE", "NIT", "Pasaporte"],
+      "required": true,
+      "default": "CC"
+    },
+    "numero_identificacion": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "nombres": {
+      "type": "string",
+      "required": true
+    },
+    "apellidos": {
+      "type": "string",
+      "required": true
+    },
+    "telefono": {
+      "type": "string"
+    },
+    "email": {
+      "type": "email"
+    },
+    "direccion": {
+      "type": "text"
+    },
+    "facturas": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::factura.factura",
+      "mappedBy": "cliente"
+    }
+  }
+}

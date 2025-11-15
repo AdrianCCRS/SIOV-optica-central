@@ -1,0 +1,50 @@
+{
+  "kind": "collectionType",
+  "collectionName": "movimiento_inventarios",
+  "info": {
+    "singularName": "movimiento-inventario",
+    "pluralName": "movimiento-inventarios",
+    "displayName": "Movimiento Inventario",
+    "description": "Movimientos de entrada/salida de inventario"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "fecha": {
+      "type": "datetime",
+      "required": true
+    },
+    "tipo_movimiento": {
+      "type": "enumeration",
+      "enum": ["Entrada", "Salida", "Ajuste Inventario", "Devolución"],
+      "required": true
+    },
+    "cantidad": {
+      "type": "integer",
+      "required": true
+    },
+    "motivo": {
+      "type": "text",
+      "required": true
+    },
+    "stock_resultante": {
+      "type": "integer",
+      "required": true,
+      "min": 0
+    },
+    "producto": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::producto.producto",
+      "inversedBy": "movimientos_inventario"
+    },
+    "usuario": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::usuario.usuario",
+      "inversedBy": "movimientos_inventario"
+    }
+  }
+}

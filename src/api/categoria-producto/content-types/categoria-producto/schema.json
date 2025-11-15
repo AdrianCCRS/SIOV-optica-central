@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "categoria_productos",
+  "info": {
+    "singularName": "categoria-producto",
+    "pluralName": "categoria-productos",
+    "displayName": "Categoría Producto",
+    "description": "Categorías para clasificar productos"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "nombre": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "descripcion": {
+      "type": "text"
+    },
+    "productos": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::producto.producto",
+      "mappedBy": "categoria"
+    }
+  }
+}

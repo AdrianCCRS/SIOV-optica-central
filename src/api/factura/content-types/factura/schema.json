@@ -1,0 +1,63 @@
+{
+  "kind": "collectionType",
+  "collectionName": "facturas",
+  "info": {
+    "singularName": "factura",
+    "pluralName": "facturas",
+    "displayName": "Factura",
+    "description": "Facturas de venta"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "numero_factura": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "fecha_emision": {
+      "type": "datetime",
+      "required": true
+    },
+    "medio_pago": {
+      "type": "enumeration",
+      "enum": ["Efectivo", "Tarjeta Débito", "Tarjeta Crédito", "Transferencia", "Otro"],
+      "required": true
+    },
+    "subtotal": {
+      "type": "decimal",
+      "required": true,
+      "min": 0
+    },
+    "valor_iva": {
+      "type": "decimal",
+      "required": true,
+      "min": 0
+    },
+    "total": {
+      "type": "decimal",
+      "required": true,
+      "min": 0
+    },
+    "cliente": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::cliente.cliente",
+      "inversedBy": "facturas"
+    },
+    "usuario": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::usuario.usuario",
+      "inversedBy": "facturas"
+    },
+    "detalles": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::detalle-factura.detalle-factura",
+      "mappedBy": "factura"
+    }
+  }
+}
