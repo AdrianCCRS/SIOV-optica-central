@@ -61,7 +61,7 @@ export default factories.createCoreController('api::factura.factura', ({ strapi 
    */
   async ventasDelDia(ctx) {
     try {
-      const usuarioId = ctx.query.usuarioId ? parseInt(ctx.query.usuarioId) : undefined;
+      const usuarioId = ctx.query.usuarioId ? parseInt(ctx.query.usuarioId as string) : undefined;
 
       const resultado = await strapi
         .service('api::factura.factura')

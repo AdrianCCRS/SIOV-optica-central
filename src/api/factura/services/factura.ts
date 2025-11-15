@@ -108,12 +108,12 @@ export default factories.createCoreService('api::factura.factura', ({ strapi }) 
           data: {
             numero_factura: numeroFactura,
             fecha_emision: new Date(),
-            medio_pago: medioPago,
+            medio_pago: medioPago as "Efectivo" | "Tarjeta Débito" | "Tarjeta Crédito" | "Transferencia" | "Otro",
             subtotal,
             valor_iva: valorIvaTotal,
             total,
             cliente: clienteId,
-            usuario: usuarioId,
+            user: usuarioId,
           },
         });
 
@@ -155,7 +155,7 @@ export default factories.createCoreService('api::factura.factura', ({ strapi }) 
               motivo: `Venta - Factura ${numeroFactura}`,
               stock_resultante: nuevoStock,
               producto: detalle.producto.id,
-              usuario: usuarioId,
+              user: usuarioId,
             },
           });
         }
