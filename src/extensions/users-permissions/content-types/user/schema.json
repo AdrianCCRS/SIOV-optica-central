@@ -66,8 +66,29 @@
       "inversedBy": "users",
       "configurable": false
     },
-    "uid": {
-      "type": "uid"
+    "nombres": {
+      "type": "string",
+      "required": true
+    },
+    "apellidos": {
+      "type": "string",
+      "required": true
+    },
+    "activo": {
+      "type": "boolean",
+      "required": true
+    },
+    "facturas": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::factura.factura",
+      "mappedBy": "user"
+    },
+    "movimiento_inventarios": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::movimiento-inventario.movimiento-inventario",
+      "mappedBy": "user"
     }
   }
 }

@@ -14,7 +14,12 @@
   "attributes": {
     "tipo_identificacion": {
       "type": "enumeration",
-      "enum": ["CC", "CE", "NIT", "Pasaporte"],
+      "enum": [
+        "CC",
+        "CE",
+        "NIT",
+        "Pasaporte"
+      ],
       "required": true,
       "default": "CC"
     },

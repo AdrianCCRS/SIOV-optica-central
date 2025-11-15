@@ -18,8 +18,13 @@
     },
     "tipo_movimiento": {
       "type": "enumeration",
-      "enum": ["Entrada", "Salida", "Ajuste Inventario", "Devolución"],
-      "required": true
+      "required": true,
+      "enum": [
+        "Entrada",
+        "Salida",
+        "Ajuste Inventario",
+        "Devolución"
+      ]
     },
     "cantidad": {
       "type": "integer",
@@ -40,11 +45,11 @@
       "target": "api::producto.producto",
       "inversedBy": "movimientos_inventario"
     },
-    "usuario": {
+    "user": {
       "type": "relation",
       "relation": "manyToOne",
-      "target": "api::usuario.usuario",
-      "inversedBy": "movimientos_inventario"
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "movimiento_inventarios"
     }
   }
 }

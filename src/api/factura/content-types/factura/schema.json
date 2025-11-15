@@ -23,8 +23,14 @@
     },
     "medio_pago": {
       "type": "enumeration",
-      "enum": ["Efectivo", "Tarjeta Débito", "Tarjeta Crédito", "Transferencia", "Otro"],
-      "required": true
+      "required": true,
+      "enum": [
+        "Efectivo",
+        "Tarjeta Débito",
+        "Tarjeta Crédito",
+        "Transferencia",
+        "Otro"
+      ]
     },
     "subtotal": {
       "type": "decimal",
@@ -47,17 +53,17 @@
       "target": "api::cliente.cliente",
       "inversedBy": "facturas"
     },
-    "usuario": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::usuario.usuario",
-      "inversedBy": "facturas"
-    },
     "detalles": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::detalle-factura.detalle-factura",
       "mappedBy": "factura"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "facturas"
     }
   }
 }
