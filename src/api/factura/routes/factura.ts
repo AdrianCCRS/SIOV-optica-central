@@ -10,7 +10,6 @@ export default {
       path: '/ventas/registrar',
       handler: 'factura.registrarVenta',
       config: {
-        auth: false, // Cambiar a true cuando tengas autenticación configurada
         policies: [],
         middlewares: [],
       },
@@ -20,7 +19,6 @@ export default {
       path: '/ventas/del-dia',
       handler: 'factura.ventasDelDia',
       config: {
-        auth: false,
         policies: [],
         middlewares: [],
       },

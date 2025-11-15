@@ -25,9 +25,8 @@
       "type": "text"
     },
     "precio_unitario": {
-      "type": "decimal",
-      "required": true,
-      "min": 0
+      "type": "biginteger",
+      "required": true
     },
     "porcentaje_iva": {
       "type": "decimal",
@@ -50,8 +49,8 @@
     },
     "activo": {
       "type": "boolean",
-      "default": true,
-      "required": true
+      "required": true,
+      "default": true
     },
     "categoria": {
       "type": "relation",

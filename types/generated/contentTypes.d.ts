@@ -787,14 +787,7 @@ export interface ApiProductoProducto extends Struct.CollectionTypeSchema {
         number
       > &
       Schema.Attribute.DefaultTo<19>;
-    precio_unitario: Schema.Attribute.Decimal &
-      Schema.Attribute.Required &
-      Schema.Attribute.SetMinMax<
-        {
-          min: 0;
-        },
-        number
-      >;
+    precio_unitario: Schema.Attribute.BigInteger & Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
     referencia: Schema.Attribute.String &
       Schema.Attribute.Required &

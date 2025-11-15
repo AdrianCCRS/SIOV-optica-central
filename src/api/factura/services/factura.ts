@@ -147,17 +147,29 @@ export default factories.createCoreService('api::factura.factura', ({ strapi }) 
           });
 
           // Crear movimiento de inventario
-          await strapi.entityService.create('api::movimiento-inventario.movimiento-inventario', {
+          console.log('Creando movimiento de inventario con datos:', {
+            fecha: new Date(),
+            tipo_movimiento: 'Salida',
+            cantidad: -detalle.cantidad,
+            motivo: `Venta - Factura ${numeroFactura}`,
+            stock_resultante: nuevoStock,
+            producto: detalle.producto.id,
+            user: usuarioId,
+          });
+
+          const movimiento = await strapi.entityService.create('api::movimiento-inventario.movimiento-inventario', {
             data: {
               fecha: new Date(),
               tipo_movimiento: 'Salida',
-              cantidad: -detalle.cantidad, // Negativo porque es salida
+              cantidad: -detalle.cantidad,
               motivo: `Venta - Factura ${numeroFactura}`,
               stock_resultante: nuevoStock,
               producto: detalle.producto.id,
               user: usuarioId,
             },
           });
+
+          console.log('Movimiento creado:', movimiento);
         }
 
         // 7. Retornar factura completa con detalles
@@ -167,7 +179,7 @@ export default factories.createCoreService('api::factura.factura', ({ strapi }) 
           {
             populate: {
               cliente: true,
-              usuario: {
+              user: {
                 fields: ['id', 'username', 'nombres', 'apellidos'],
               },
               detalles: {
@@ -209,14 +221,14 @@ export default factories.createCoreService('api::factura.factura', ({ strapi }) 
     };
 
     if (usuarioId) {
-      where.usuario = usuarioId;
+      where.user = usuarioId;
     }
 
     const facturas = await strapi.entityService.findMany('api::factura.factura', {
       filters: where,
       populate: {
         cliente: true,
-        usuario: {
+        user: {
           fields: ['id', 'username', 'nombres', 'apellidos'],
         },
       },
