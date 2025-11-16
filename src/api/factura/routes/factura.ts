@@ -23,6 +23,15 @@ export default {
         middlewares: [],
       },
     },
+    {
+      method: 'GET',
+      path: '/ventas/:id/detalle',
+      handler: 'factura.detalleFactura',
+      config: {
+        policies: [],
+        middlewares: [],
+      },
+    },
     // Rutas CRUD estándar
     {
       method: 'GET',

@@ -7,6 +7,38 @@ import { factories } from '@strapi/strapi';
 
 export default factories.createCoreController('api::factura.factura', ({ strapi }) => ({
   /**
+   * GET /api/facturas/:id
+   * Override del findOne para incluir populate automático
+   */
+  async findOne(ctx) {
+    const { id } = ctx.params;
+
+    const factura = await strapi.entityService.findOne(
+      'api::factura.factura',
+      id,
+      {
+        populate: {
+          cliente: true,
+          user: {
+            fields: ['id', 'username', 'nombres', 'apellidos'],
+          },
+          detalles: {
+            populate: {
+              producto: true,
+            },
+          },
+        },
+      }
+    );
+
+    if (!factura) {
+      return ctx.notFound('Factura no encontrada');
+    }
+
+    return ctx.send({ data: factura });
+  },
+
+  /**
    * POST /api/ventas/registrar
    * Endpoint para registrar una venta completa
    */
@@ -71,6 +103,43 @@ export default factories.createCoreController('api::factura.factura', ({ strapi 
     } catch (error) {
       strapi.log.error('Error al obtener ventas del día:', error);
       return ctx.badRequest(error.message || 'Error al obtener ventas');
+    }
+  },
+
+  /**
+   * GET /api/ventas/:id/detalle
+   * Obtener detalle completo de una factura
+   */
+  async detalleFactura(ctx) {
+    try {
+      const { id } = ctx.params;
+
+      const factura = await strapi.entityService.findOne(
+        'api::factura.factura',
+        id,
+        {
+          populate: {
+            cliente: true,
+            user: {
+              fields: ['id', 'username', 'nombres', 'apellidos'],
+            },
+            detalles: {
+              populate: {
+                producto: true,
+              },
+            },
+          },
+        }
+      );
+
+      if (!factura) {
+        return ctx.notFound('Factura no encontrada');
+      }
+
+      return ctx.send(factura);
+    } catch (error) {
+      strapi.log.error('Error al obtener detalle de factura:', error);
+      return ctx.badRequest(error.message || 'Error al obtener factura');
     }
   },
 }));
