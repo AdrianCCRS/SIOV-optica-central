@@ -32,6 +32,15 @@ export default {
         middlewares: [],
       },
     },
+    {
+      method: 'GET',
+      path: '/ventas/buscar',
+      handler: 'factura.buscarFacturas',
+      config: {
+        policies: [],
+        middlewares: [],
+      },
+    },
     // Rutas CRUD estándar
     {
       method: 'GET',

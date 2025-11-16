@@ -142,4 +142,77 @@ export default factories.createCoreController('api::factura.factura', ({ strapi 
       return ctx.badRequest(error.message || 'Error al obtener factura');
     }
   },
+
+  /**
+   * GET /api/ventas/buscar
+   * Buscar facturas con filtros de fecha
+   * Query params: fechaInicio, fechaFin, numeroFactura, clienteId
+   */
+  async buscarFacturas(ctx) {
+    try {
+      const { fechaInicio, fechaFin, numeroFactura, clienteId } = ctx.query;
+
+      const filters: any = {};
+
+      // Filtro por rango de fechas
+      if (fechaInicio && fechaFin) {
+        const inicio = new Date(fechaInicio as string);
+        inicio.setHours(0, 0, 0, 0);
+        
+        const fin = new Date(fechaFin as string);
+        fin.setHours(23, 59, 59, 999);
+
+        filters.fecha_emision = {
+          $gte: inicio,
+          $lte: fin,
+        };
+      } else if (fechaInicio) {
+        const inicio = new Date(fechaInicio as string);
+        inicio.setHours(0, 0, 0, 0);
+        filters.fecha_emision = { $gte: inicio };
+      } else if (fechaFin) {
+        const fin = new Date(fechaFin as string);
+        fin.setHours(23, 59, 59, 999);
+        filters.fecha_emision = { $lte: fin };
+      }
+
+      // Filtro por número de factura
+      if (numeroFactura) {
+        filters.numero_factura = {
+          $containsi: numeroFactura,
+        };
+      }
+
+      // Filtro por cliente
+      if (clienteId) {
+        filters.cliente = clienteId;
+      }
+
+      const facturas = await strapi.entityService.findMany('api::factura.factura', {
+        filters,
+        populate: {
+          cliente: true,
+          user: {
+            fields: ['id', 'username', 'nombres', 'apellidos'],
+          },
+        },
+        sort: { fecha_emision: 'desc' },
+        limit: 100, // Limitar a 100 resultados
+      });
+
+      const total = facturas.length;
+      const totalVentas = facturas.reduce((sum: number, f: any) => sum + (f.total || 0), 0);
+
+      return ctx.send({
+        facturas,
+        resumen: {
+          cantidad: total,
+          total_ventas: totalVentas,
+        },
+      });
+    } catch (error) {
+      strapi.log.error('Error al buscar facturas:', error);
+      return ctx.badRequest(error.message || 'Error al buscar facturas');
+    }
+  },
 }));
