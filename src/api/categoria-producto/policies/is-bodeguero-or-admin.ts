@@ -1,12 +1,12 @@
 /**
- * `is-cajero-or-admin` policy
- * Verifica que el usuario autenticado tenga el rol de Cajero (Vendedor) o Administrador
+ * `is-bodeguero-or-admin` policy
+ * Verifica que el usuario autenticado tenga el rol de Bodeguero o Administrador
  */
 
 export default async (policyContext, config, { strapi }) => {
   const { state } = policyContext;
 
-  console.log('=== POLICY: is-cajero-or-admin ===');
+  console.log('=== POLICY: is-bodeguero-or-admin (categoria-producto) ===');
   console.log('state.user:', state.user);
 
   // Verificar si el usuario está autenticado
@@ -35,9 +35,9 @@ export default async (policyContext, config, { strapi }) => {
     const roleName = user.role.name;
     console.log(`✅ Usuario: ${user.username}, Rol: ${roleName}, Type: ${roleType}`);
 
-    // Permitir acceso a Cajero (Vendedor), Authenticated y Administrador
-    const allowedRoleTypes = ['cajero', 'vendedor', 'authenticated', 'admin', 'administrator'];
-    const allowedRoleNames = ['Cajero', 'Vendedor', 'Authenticated', 'Administrador', 'Administrator', 'Admin'];
+    // Permitir acceso a Bodeguero y Administrador
+    const allowedRoleTypes = ['bodeguero', 'admin', 'administrator'];
+    const allowedRoleNames = ['Bodeguero', 'Administrador', 'Administrator', 'Admin'];
     
     if (allowedRoleTypes.includes(roleType) || allowedRoleNames.includes(roleName)) {
       console.log(`✅ Acceso permitido para rol: ${roleName} (${roleType})`);
@@ -47,7 +47,7 @@ export default async (policyContext, config, { strapi }) => {
     console.log(`❌ Acceso denegado para rol: ${roleName} (${roleType})`);
     return false;
   } catch (error) {
-    console.error('❌ Error en política is-cajero-or-admin:', error);
+    console.error('❌ Error en política is-bodeguero-or-admin:', error);
     return false;
   }
 };
