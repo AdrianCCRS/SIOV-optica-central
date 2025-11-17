@@ -36,7 +36,7 @@ export default async (policyContext, config, { strapi }) => {
     console.log(`✅ Usuario: ${user.username}, Rol: ${roleName}, Type: ${roleType}`);
 
     // Permitir acceso a Bodeguero y Administrador
-    const allowedRoleTypes = ['bodeguero', 'admin', 'administrator'];
+    const allowedRoleTypes = ['bodeguero', 'admin', 'administrator', 'administrador'];
     const allowedRoleNames = ['Bodeguero', 'Administrador', 'Administrator', 'Admin'];
     
     if (allowedRoleTypes.includes(roleType) || allowedRoleNames.includes(roleName)) {
