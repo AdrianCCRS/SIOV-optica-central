@@ -4,6 +4,7 @@
  */
 
 import { factories } from '@strapi/strapi';
+import { sendInvoiceEmail } from '../services/email.service';
 
 export default factories.createCoreController('api::factura.factura', ({ strapi }) => ({
   /**
@@ -79,6 +80,13 @@ export default factories.createCoreController('api::factura.factura', ({ strapi 
       const resultado = await strapi
         .service('api::factura.factura')
         .registrarVenta({ clienteId, productos, medioPago }, usuarioId);
+
+      // Enviar correo con la factura generada
+      const clienteEmail = resultado?.cliente?.email;
+      if (clienteEmail) {
+        const htmlContent = `<h1>Factura Generada</h1><p>Gracias por su compra. Adjuntamos su factura.</p>`;
+        await sendInvoiceEmail(clienteEmail, 'Factura Generada', htmlContent);
+      }
 
       return ctx.send(resultado);
     } catch (error) {
@@ -213,6 +221,56 @@ export default factories.createCoreController('api::factura.factura', ({ strapi 
     } catch (error) {
       strapi.log.error('Error al buscar facturas:', error);
       return ctx.badRequest(error.message || 'Error al buscar facturas');
+    }
+  },
+
+  /**
+   * POST /api/facturas/:id/send-email
+   * Enviar la factura como PDF por correo
+   */
+  async sendEmail(ctx) {
+    try {
+      const { id } = ctx.params;
+
+      // Obtener la factura con los datos necesarios
+      const factura = await strapi.entityService.findOne(
+        'api::factura.factura',
+        id,
+        {
+          populate: {
+            cliente: true,
+          },
+        }
+      );
+
+      if (!factura) {
+        return ctx.notFound('Factura no encontrada');
+      }
+
+      // Ajustar el tipo de factura para incluir cliente
+      type FacturaConCliente = typeof factura & {
+        cliente?: {
+          email?: string;
+        };
+      };
+
+      const facturaConCliente = factura as FacturaConCliente;
+
+      const clienteEmail = facturaConCliente.cliente?.email;
+      if (!clienteEmail) {
+        return ctx.badRequest('El cliente no tiene un correo registrado');
+      }
+
+      // Generar el contenido del correo
+      const htmlContent = `<h1>Factura ${factura.numero_factura}</h1><p>Adjuntamos su factura en formato PDF.</p>`;
+
+      // Enviar el correo
+      await sendInvoiceEmail(clienteEmail, `Factura ${factura.numero_factura}`, htmlContent);
+
+      return ctx.send({ message: 'Correo enviado exitosamente' });
+    } catch (error) {
+      strapi.log.error('Error al enviar el correo:', error);
+      return ctx.badRequest('Error al enviar el correo');
     }
   },
 }));

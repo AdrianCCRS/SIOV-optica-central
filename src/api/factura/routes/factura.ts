@@ -67,5 +67,14 @@ export default {
       path: '/facturas/:id',
       handler: 'factura.delete',
     },
+    {
+      method: 'POST',
+      path: '/facturas/:id/send-email',
+      handler: 'factura.sendEmail',
+      config: {
+        policies: [],
+        middlewares: [],
+      },
+    },
   ],
 };

@@ -58,3 +58,15 @@ export default ({ env }) => {
     },
   };
 };
+
+// Configuración SMTP para envío de correos
+export const smtpConfig = {
+  host: process.env.SMTP_HOST || 'smtp.example.com',
+  port: parseInt(process.env.SMTP_PORT || '587', 10),
+  secure: false, // true para puerto 465, false para otros puertos
+  auth: {
+    user: process.env.SMTP_USER || 'user@example.com',
+    pass: process.env.SMTP_PASS || 'password',
+  },
+  from: process.env.SMTP_FROM || 'no-reply@example.com',
+};
